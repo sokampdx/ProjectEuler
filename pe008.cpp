@@ -32,7 +32,7 @@ int main ()
 		product[i] = '\0';
 	}
 
-	ifstream myfile ("pe8.txt");    //input file name
+	ifstream myfile ("pe008.txt");    //input file name
 
 	// read file
 	if (myfile.is_open())
