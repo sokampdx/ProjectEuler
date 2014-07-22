@@ -3,20 +3,32 @@
 
 using namespace std;
 
-const unsigned long long MAX = 10;
+const unsigned long long MAX = 2000000;
 
 
 int main()
 {
-	unsigned long long sum = 0;
-	unsigned long long i;
-	unsigned long long list[MAX];
-	unsigned long long current = 0;
+	unsigned long long sum = 2;
+	unsigned long long i, j;
+ 	bool prime[MAX];
 
+	// initialize array
 	for (i = 0; i < MAX; ++i)
-		list[MAX] = true;
+		prime[i] = true;
 
-	for (i = 2; i < MAX; ++i)
+	// initialize even number not prime (except 2)
+	for (i = 4; i < MAX; i+=2)
+		prime[i] = false;
+
+	// eliminate non prime
+	for (i = 3; i < MAX; i+=2)
 	{
-		if (current != 0 && )
+		if (prime[i]) {
+			for (j = 2i; j < MAX; j+=i)
+				prime[j] = false;
+			sum += i;
+		}
+	}
+	cout << "The sum = " << sum << endl;
+}
 		
