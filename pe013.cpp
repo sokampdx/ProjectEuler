@@ -10,14 +10,11 @@ using namespace std;
 // global const
 const int MAX = 100;
 const int LEN = 50;
- 
+const int FINAL = 10; 
+
 // global array
 string number[MAX];
-
-
-
-
-
+string subTotal[LEN];
 
 // readfile into global number array
 void readfile (string filename) {
@@ -41,68 +38,57 @@ void printNumber () {
 	}
 }
 
+// print subtotal array
+void printSubTotal() {
+	for (int i = (LEN - 1); i >= 0; --i) {
+		cout << subTotal[i] << endl;
+	}
+}
+
 // calculate fix string sum
-void stringSum(string& result, int current) {
+string  addColumn(int index) {
 	int value = 0;
 
 	for (int i = 0; i < MAX; ++i) {
-		value += stoi(number[i].substr(current, 1));
+		value += stoi(number[i].substr(index, 1));
 	}
 
 	cout << value << endl;
-	result = to_string(value);
+	return to_string(value);
 }
 
-// calculate vary string sum
-string string2Sum(string previous, string current) {
-	int pSize = previous.size();
-	int cSize = current.size();
-	int limit = max(pSize - 1, cSize);
-	int pValue, cValue, value;
-	int carry = 0;
-	string result = "0";
+// modify the sub total array
+void  modifySubTotal() {
+	for (int i = (LEN - 1); i > 0; --i) {
+		subTotal[i-1] = to_string(stoi(subTotal[i-1]) + (stoi(subTotal[i]) / 10));
+	}
+}
 
-	for (int i = 0; i < limit; ++i) {
-		if (i < (pSize - 1))
-			pValue = stoi(previous.substr(pSize - i - 1, 1));
-		else
-			pValue = 0;
-		if (i < cSize)
-			cValue = stoi(current.substr(cSize - i, 1));
-		else
-			cValue = 0;
+// get sub Total of each column 
+void getSubTotal() {
 
-		value = pValue + cValue + carry;
-		carry = 0;
+	string result="0";
 
-		if (value > 9) {
-			carry = value / 10;
-		}			
-		result.insert(0, to_string(value % 10));			
+	for (int i = (LEN - 1); i >= 0; --i) {
+		subTotal[i] = addColumn(i);
+	}
+}
+
+// create result string
+string getResult() {
+    string result;
+	int pos = subTotal[0].size();
+    int limit = FINAL - pos;
+
+	result.append(subTotal[0]);
+	
+	for (int i = 1; i <= limit; ++i) {
+		pos = subTotal[i].size();
+		result.append(subTotal[i].substr(pos-1,1));
 	}
 
 	return result;
 }
-
-
-// print result
-void printResult () {
-	string previous="0";
-	string current="0";
-	string result="0";
-	
-	for (int i = (LEN - 1); i >= (LEN - 1); --i) {
-		stringSum(current, LEN-1);
-		result = string2Sum(previous, current);
-		previous = current;
-		current = result;
-	}
-
-	cout << "The final result is: " << endl;
-	cout << result << endl;
-}
-
-
 
 
 // Main program
@@ -110,7 +96,13 @@ int main ()
 {
 	readfile("pe013.txt");
 	printNumber();
-	printResult();
+	getSubTotal();
+	printSubTotal();
+	modifySubTotal();
+	printSubTotal();
+
+	cout << "The result is: " << getResult() << endl;
+
 	return 0;
 }
 
