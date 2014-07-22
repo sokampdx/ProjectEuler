@@ -15,10 +15,6 @@ const int LEN = 50;
 string number[MAX];
 
 
-
-
-
-
 // readfile into global number array
 void readfile (string filename) {
 	ifstream myfile(filename);
@@ -87,16 +83,20 @@ string string2Sum(string previous, string current) {
 
 // print result
 void printResult () {
-	string previous="0";
-	string current="0";
+	string previous="12340";
+	string current="9876";
 	string result="0";
-	
+
+/*	
 	for (int i = (LEN - 1); i >= (LEN - 1); --i) {
 		stringSum(current, LEN-1);
 		result = string2Sum(previous, current);
 		previous = current;
 		current = result;
 	}
+*/
+
+	result = string2Sum(previous, current);
 
 	cout << "The final result is: " << endl;
 	cout << result << endl;
