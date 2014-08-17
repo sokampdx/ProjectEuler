@@ -15,9 +15,9 @@ int main ()
 	char current = '0';         //current char
 	int value = 0;              //current char value
 	int currentn = 0;           //current char counting
-	char rolling[LEN];          //current sequence of char
+	char rolling[LEN+1];          //current sequence of char
 	long int rollingsum = 1;    //current sequence product
-	char product[LEN];          //highest sequence of char
+	char product[LEN+1];          //highest sequence of char
 	long int high = 1;               //highest sequence product 
 	int size = 0;               //line size
 	string line;                //input line
@@ -26,7 +26,7 @@ int main ()
     int userwait;               //for user input
 
     // initialize the array to '\0'
-	for (int i = 0; i < LEN; i++)
+	for (int i = 0; i <= LEN; i++)
 	{
 		rolling[i] = '\0';
 		product[i] = '\0';
