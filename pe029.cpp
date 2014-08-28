@@ -138,7 +138,7 @@ int main ()
 	limit = findLimit();
 	findDuplicate();
 
-	printTerms();
+//	printTerms();
 	
 	result -= countDuplicate();
 
