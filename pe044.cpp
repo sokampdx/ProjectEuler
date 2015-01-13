@@ -8,17 +8,8 @@
 using namespace std;
 
 // global constant
-const int MAX = 10000;
-const int SIZE = 0;
 
 // global variable
-int penNum[MAX];
-
-// init penNum
-void initNum() {
-	for (int i = 0; i < MAX; ++i)
-		penNum[i] = 0;
-}
 
 // get pentagon number's nth value
 int getN(unsigned long number) {
@@ -30,8 +21,6 @@ int getN(unsigned long number) {
 unsigned long getPenNumber(int n) {
 	unsigned long x = (unsigned long) n;
 	unsigned long result = (3 * x - 1) * x / 2;
-	if (!penNum[n])
-		penNum[n] = result;
 	return result;
 }
 
@@ -42,7 +31,6 @@ bool isPenNumber(unsigned long number) {
 	return getPenNumber(getN(number)) == number;
 }
 
-/*
 // verify minD after finding a D
 unsigned long findMinD(unsigned long minD, int start) {
 	int i = start + 1;
@@ -52,24 +40,22 @@ unsigned long findMinD(unsigned long minD, int start) {
 	unsigned long result = minD;
 
 	while (!isFound) {
-		if (penNum[i]) 
-			pi = penNum[i];
-		else
-			pi = getPenNumber(i);
+		pi = getPenNumber(i);
 
 		int j = i - 1;
-		while (!isFound && j > 0) {
-			if (penNum[j])
-				pj = penNum[j];
-			else
-				pj = getPenNumber(j);
+		bool isOver = false;
+		while (!isFound && !isOver && j > 0) {
+			pj = getPenNumber(j);
 			
 			int d = pi - pj;
-			if (i == (j+1) && d > result)
-				isFound = true;
-			
-			if (isPenNumber(pi+pj) && isPenNumber(d) && (d < result)) {
-				result = d;
+			if (d < result) {
+				//cout << i << endl;
+				if (isPenNumber(pi+pj) && isPenNumber(d)) 
+					result = d;
+			} else {
+				isOver = true;
+				if (i == (j+1))
+					isFound = true;
 			}
 
 			--j;
@@ -80,7 +66,7 @@ unsigned long findMinD(unsigned long minD, int start) {
 	return result;
 
 }
-*/
+
 
 // find D
 unsigned long findD() {
@@ -90,18 +76,12 @@ unsigned long findD() {
 	unsigned long pj = 0;
 	unsigned long result = 0;
 	
-	while (!isFound && i < MAX) {
-		if (penNum[i]) 
-			pi = penNum[i];
-		else
-			pi = getPenNumber(i);
+	while (!isFound) {
+		pi = getPenNumber(i);
 
 		int j = i - 1;
 		while (!isFound && j > 0) {
-			if (penNum[j])
-				pj = penNum[j];
-			else
-				pj = getPenNumber(j);
+			pj = getPenNumber(j);
 
 			if (isPenNumber(pi+pj) && isPenNumber(pi-pj)) {
 				isFound = true;
@@ -113,8 +93,9 @@ unsigned long findD() {
 		++i;
 	}
 
-	return result;
-//	return findMinD(result, getN(pi));
+	//	cout << "---> " << result << endl;
+
+	return findMinD(result, getN(pi));
 }
 
 // main program
