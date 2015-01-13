@@ -35,10 +35,52 @@ unsigned long getPenNumber(int n) {
 	return result;
 }
 
+
+
 // verify pentagon number
 bool isPenNumber(unsigned long number) {
 	return getPenNumber(getN(number)) == number;
 }
+
+/*
+// verify minD after finding a D
+unsigned long findMinD(unsigned long minD, int start) {
+	int i = start + 1;
+	bool isFound = false;
+	unsigned long pi = 0;
+	unsigned long pj = 0;
+	unsigned long result = minD;
+
+	while (!isFound) {
+		if (penNum[i]) 
+			pi = penNum[i];
+		else
+			pi = getPenNumber(i);
+
+		int j = i - 1;
+		while (!isFound && j > 0) {
+			if (penNum[j])
+				pj = penNum[j];
+			else
+				pj = getPenNumber(j);
+			
+			int d = pi - pj;
+			if (i == (j+1) && d > result)
+				isFound = true;
+			
+			if (isPenNumber(pi+pj) && isPenNumber(d) && (d < result)) {
+				result = d;
+			}
+
+			--j;
+		}
+		++i;
+	}
+
+	return result;
+
+}
+*/
 
 // find D
 unsigned long findD() {
@@ -46,9 +88,6 @@ unsigned long findD() {
 	bool isFound = false;
 	unsigned long pi = 0;
 	unsigned long pj = 0;
-	int size = 5;
-//	unsigned long result[size];
-//	int index = 0;
 	unsigned long result = 0;
 	
 	while (!isFound && i < MAX) {
@@ -64,30 +103,19 @@ unsigned long findD() {
 			else
 				pj = getPenNumber(j);
 
-			//cout << i << ">" << pi << ":" << j << ">" << pj << endl;
-	
 			if (isPenNumber(pi+pj) && isPenNumber(pi-pj)) {
 				isFound = true;
 				result = pi -pj;
-				//unsigned long d = pi - pj;
-				//result[index] = d;
-				//++index;
-				//cout << d << endl;
-	
-				//if (index > (size - 1))
-				//	isFound = true;
 			}
 
 			--j;
 		}
 		++i;
-		//cout << i << endl;
 	}
-	
+
 	return result;
+//	return findMinD(result, getN(pi));
 }
-
-
 
 // main program
 int main () 
