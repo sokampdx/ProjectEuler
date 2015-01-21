@@ -11,28 +11,39 @@ const unsigned long MAX = 1000000;
 const unsigned long LIMIT = 1000;
 const string FILENAME = "prime.txt";
 
-bool prime[MAX];
-
+//bool prime[MAX];
+int composite[MAX];
 
 void initialize() {
-	for (unsigned long i = 0; i < MAX; ++i)
-		prime[i] = true;
+
+	for (unsigned long i = 0; i < MAX; ++i) {
+//		prime[i] = true;
+		composite[i] = 0;
+	}
 	
-	for (unsigned long i = 4; i < MAX; i+=2)
-		prime[i] = false;
-}
-
-
-void primeSieve() {
-	for (unsigned long i = 3; i < LIMIT; i+=2) {
-		if (prime[i]) {
-			for (unsigned long j = (i+i); j < MAX; j+=i)
-				prime[j] = false;
-		}
+	for (unsigned long i = 4; i < MAX; i+=2) {
+//		prime[i] = false;
+		++composite[i];
 	}
 }
 
 
+void primeSieve() {
+
+	for (unsigned long i = 3; i < LIMIT; i+=2) {
+/*		if (prime[i]) {
+			for (unsigned long j = (i+i); j < MAX; j+=i)
+				prime[j] = false;
+		}
+*/
+		if (!composite[i]) {
+			for (unsigned long j = (i+i); j < MAX; j+=i)
+				++composite[j];
+		}
+	}
+}
+
+/*
 void printPrime() {
 	cout << 2 << endl;
 	for (unsigned long i = 3; i < MAX; i+=2) {
@@ -96,10 +107,37 @@ unsigned long find(int max) {
 
 	return lowest;
 }
+*/
 
+unsigned long find2(int max) {
+	bool found = false;
+	unsigned long n = 14;
+	unsigned long lowest = 0;
+	int count = 0;
+
+	while (!found) {
+		if (composite[n] >= max) {
+			if (count == 0) {
+				lowest = n;
+			}
+			++count;
+		} else {
+			count = 0;
+		}
+
+		if (count >= max) {
+			found = true;
+		}
+
+		++n;
+	}
+
+	return lowest;
+}
+			
 
 		
-
+/*
 void test() {
 	int max = 2;
 	unsigned long n = 14;
@@ -133,7 +171,7 @@ void test() {
 	cout << "Expected: 644" << endl;
 
 }
-
+*/
 
 // main program
 int main () 
@@ -143,8 +181,9 @@ int main ()
 	//printPrime();
 
 	//	test();	
+	int max = 4;
 
-	unsigned long result = find(4);
+	unsigned long result = find2(max);
 	cout << "The result = " << result << endl;
 
 	return 0;
