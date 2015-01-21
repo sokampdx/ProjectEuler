@@ -73,14 +73,14 @@ bool hasDistinctPrime(int max, unsigned long n) {
 
 unsigned long find(int max) {
 	bool found = false;
-	unsigned long start = 210;
+	unsigned long n = 210;
 	unsigned long lowest = 0;
 	int count = 0;
 
 	while (!found) {
-		if (hasDistinctPrime(max, start)) {
+		if (hasDistinctPrime(max, n)) {
 			if (count == 0) {
-				lowest = start;
+				lowest = n;
 			}
 			++count;
 		} else {
@@ -91,7 +91,7 @@ unsigned long find(int max) {
 			found = true;
 		}
 
-		++start;
+		++n;
 	}
 
 	return lowest;
