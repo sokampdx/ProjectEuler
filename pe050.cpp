@@ -10,8 +10,9 @@ typedef int dtype;
 
 using namespace std;
 
-const dtype LIMIT = 100;
-const dtype SQRTLIMIT = 10;
+const dtype LIMIT = 1000000;
+const dtype SQRTLIMIT = (dtype) sqrt(LIMIT) + 1;
+const dtype MAX = LIMIT / 2 + 1;
 
 bool prime[LIMIT];
 
@@ -52,10 +53,84 @@ void printPrime() {
 	}
 }
 
+dtype nextPrimeAbove(dtype number) {
+	if (number == 2)
+		return 3;
+
+	dtype value = number + 2;
+	while (!isPrime(value))
+		value += 2;
+	return value;
+}
+
+dtype nextPrimeBelow(dtype number) {
+	if (number == 3)
+		return 2;
+
+	dtype value = number - 2;
+	while (!isPrime(value))
+		value -= 2;
+	return value;
+}
+
+
+dtype sumPrime (dtype start, dtype end) {
+	dtype sum = 0;
+
+	for (dtype i = start; i <= end; i=nextPrimeAbove(i)) {
+		sum += i;
+	}
+
+	return sum;
+}
+
+
+dtype findConsecutive() {
+	dtype start = 2;
+	dtype end = start;
+	dtype i = nextPrimeAbove(start);
+	dtype sum = start;
+	int count = 1;
+	int maxCount = count;
+	dtype maxStart = start;
+	dtype maxEnd = end;
+	dtype maxSum = sum;
+
+	while (start < MAX) {
+		sum += i;
+		end = i;
+		++count;
+//cout << "3: maxCount:" << maxCount << ":maxStart:" << maxStart << ":maxEnd:" << maxEnd << endl;
+//cout << "1: i:" << i << ":sum:" << sum << ":start:" << start << ":end:" << end << ":count:" << count << endl;	
+
+		if (sum < LIMIT) { 
+			if (isPrime(sum) && maxCount < count) {
+				maxCount = count;
+				maxStart = start;
+				maxEnd = end;
+				maxSum = sum;
+			}
+			i = nextPrimeAbove(i);
+		} else {
+			start = nextPrimeAbove(start);
+			end = start;
+			sum = start;
+			i = nextPrimeAbove(start);
+			count = 1;
+		}
+	}
+	
+	return sumPrime(maxStart, maxEnd);
+}
+
+
+
 
 void test() {
+	dtype i = findConsecutive();
 	
-}
+
+}	
 
 
 int main () 
@@ -68,7 +143,9 @@ int main ()
 
 	//test();
 
+	result = findConsecutive();
 	cout << "The result is: "  << result << endl;
+
 
 	return 0;
 }
