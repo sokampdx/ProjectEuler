@@ -12,8 +12,12 @@ using namespace std;
 const dtype LIMIT = 1000000;
 const dtype SQRTLIMIT = (dtype) sqrt(LIMIT) + 1;
 const dtype FOUND = 8;
+const dtype SIZE = 4;
 
 bool prime[LIMIT];
+
+dtype digit[] = {1,3,7,9};
+
 
 void initialize() {
 	for (dtype i = 0; i < LIMIT; ++i) {
@@ -69,35 +73,42 @@ dtype nextPrimeBelow(dtype number) {
 	return value;
 }
 
-dtype findIn4digits() {
+dtype findInNdigits() {
 	dtype result = 0;
-	dtype digit = 1;
+	dtype index = 0;
 	bool isFound = false;
+
+	dtype base = 1110;
 	
-	while ((digit < 8) && (!isFound)) {
+	while ((index < SIZE) && (!isFound)) {
 		dtype count = 0;
 		dtype min = 0;
-		dtype current = 0;
+		dtype varying = 0;
+		dtype constant = 0;
 		dtype value = 0;	
+
+		constant = digit[index];
+		if (constant % 3 != 0) {
 	
-		for (dtype i = 1; i < 10; ++i) {
-			current += 1110;
-			value = current + digit;
+			for (dtype i = 1; i < 10; ++i) {
+				varying += base;
+				value = varying + constant;
 			
-			if (isPrime(value)) {
-				cout << digit << ":" << value << endl;
-				if (count == 0) {
-					min = value;
-				} 
-				++count;
+				if (isPrime(value)) {
+					cout << constant << ":" << value << endl;
+					if (count == 0) {
+						min = value;
+					} 
+					++count;
+				}
+			}
+
+			if (count >= FOUND) {
+				isFound = true;
+				result = min;
 			}
 		}
-
-		if (count >= FOUND) {
-			isFound = true;
-			result = min;
-		}
-		digit+=6;
+		++index;
 	}
 	return result;
 }
@@ -107,9 +118,8 @@ dtype findIn4digits() {
 dtype find8PrimeFamily() {
 	dtype result = 0;
 
-	result = findIn4digits();
+	result = findInNdigits(); 
 
-	cout << result << endl;
 	return result;
 }
 
