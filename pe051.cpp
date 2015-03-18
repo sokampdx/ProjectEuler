@@ -74,7 +74,7 @@ dtype nextPrimeBelow(dtype number) {
 }
 
 dtype findInNdigits() {
-	dtype result = 0;
+	dtype result = MAX;
 	dtype index = 0;
 	bool isFound = false;
 
@@ -83,16 +83,15 @@ dtype findInNdigits() {
 	while ((index < SIZE) && (!isFound)) {
 		dtype count = 0;
 		dtype min = 0;
-		dtype varying = 0;
 		dtype constant = 0;
-		dtype value = 0;	
 
 		constant = digit[index];
 		if (constant % 3 != 0) {
+			dtype min = MAX;
 	
 			for (dtype i = 1; i < 10; ++i) {
-				varying += base;
-				value = varying + constant;
+				dtype varying += base;
+				dtype value = varying + constant;
 			
 				if (isPrime(value)) {
 					cout << constant << ":" << value << endl;
