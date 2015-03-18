@@ -100,9 +100,7 @@ dtype findConsecutive() {
 		sum += i;
 		end = i;
 		++count;
-//cout << "3: maxCount:" << maxCount << ":maxStart:" << maxStart << ":maxEnd:" << maxEnd << endl;
-//cout << "1: i:" << i << ":sum:" << sum << ":start:" << start << ":end:" << end << ":count:" << count << endl;	
-
+		
 		if (sum < LIMIT) { 
 			if (isPrime(sum) && maxCount < count) {
 				maxCount = count;
