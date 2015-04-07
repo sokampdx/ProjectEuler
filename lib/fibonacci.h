@@ -20,7 +20,7 @@ Fibonacci<T>::Fibonacci() {
 	max = 0;
 }
 
-tempalte <class T>
+template <class T>
 Fibonacci<T>::Fibonacci(T n) {
 	max = n;
 }
@@ -50,3 +50,5 @@ template <class T>
 bool Fibonacci<T>::isEven(T n) {
 	return !(n % 2);
 }
+
+#endif
