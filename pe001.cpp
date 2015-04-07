@@ -4,13 +4,15 @@
  
 using namespace std; 
 
-int findN(int max, int divisor) {
+template <class T>
+T findN(T max, T divisor) {
 	return ((max - 1) / divisor);
 }
 
-int findSolution(int max) {
-	int i, j, k;
-	int sum = 0;
+template <class T>
+T findSolution(T max) {
+	T i, j, k;
+	T sum = 0;
 
 	i = findN(max, 3);
 	j = findN(max, 5);
