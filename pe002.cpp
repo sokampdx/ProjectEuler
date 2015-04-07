@@ -1,34 +1,31 @@
 #include <iostream> 
- 
+#include <sstream>
+#include "lib/fibonacci.h"
+
 using namespace std; 
  
-const unsigned int MAX = 4000000; 
+
+template <class T>
+T findSolution(T max) {
+	Fibonacci<T> fibonacci(max);
+
+	return fibonacci.getSumOfEvenTerm();
+}
+
  
-int main() 
-{ 
-    unsigned int sum;                        // curmutive sum 
-    unsigned int current, previous, next;    // Fibonacci number 
-     
-    // initialize 
-    previous = next = sum = 0; 
-    current = 1; 
- 
-    while (next < MAX) 
-    { 
-        // add even-term to sum 
-        if (!(next % 2)) 
-            sum += next; 
-         
-        // increment fibonacci numbers 
-        next = current + previous; 
-        previous = current; 
-        current = next; 
-    } 
-     
-    // print result 
-    cout << sum << endl; 
-    
-    return 0; 
-} 
- 
+int main(int argc, char *argv[]) {
+	if (argc == 2) {
+		istringstream ss(argv[1]);
+		unsigned long n;
+		if (!(ss >> n)) {
+			cerr << "Invalid number" << argv[1] << endl;
+      	} else {
+			cout << "The result is = " << findSolution(n) << endl;
+		}
+	} else {
+		cout << "usage: " << argv[0] << " <input> " << endl;
+	}
+
+	return 0;
+}
  
