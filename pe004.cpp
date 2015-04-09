@@ -1,43 +1,103 @@
 #include <iostream>
-#include <cmath>
+#include <sstream>
 
 using namespace std;
 
-int main()
-{
-	int i;
-	int j;
-	int value, test;
-	int a, b, c, d, e, f;
-	int answer = 0;
+template <class T>
+T findMin(T number) {
+	T min = 1;
+	for (T k = 1; k < number; ++k) {
+		min *= 10;
+	}
+	return min;
+}
 
-	i = 999;
-	while (i > 100)
-	{
-		j = 999;
-		test = i * 999;
-		while (j > 100 && test > answer)
-		{
+
+template <class T>
+T findLengthOf(T number) {
+	T counter = 0;
+	T current = number;
+
+	while (current > 0) {
+		current /= 10;
+		++counter;
+	}
+		
+	return counter;
+}
+
+template <class T>
+bool isPalindrome(T number) {
+	T count = findLengthOf(number);
+	T limit = count / 2;
+	bool isValid = true;
+	T digit[limit];
+	T current = number;
+	
+	for (T i = 0; i < limit; ++i) {
+		digit[i] = current % 10;
+		current /= 10;
+	}
+
+	if (count % 2 == 1) {
+		current /= 10;
+	}
+
+	for (T i = (limit-1); i >= 0; --i) {
+		isValid &= (digit[i] == (current % 10));
+		current /= 10;
+	}
+
+	return isValid;
+}
+
+
+template <class T>
+T findLargestPalindrome(T number) {
+	T min = findMin(number);
+	T max = min * 10 - 1;
+	T i, j;
+	T value, test;
+
+	int largest = 0;
+
+	i = max;
+	while (i > min)	{
+		j = max;
+		test = i * max;
+		while (j > min && test > largest) {
 			value = i * j;
-			a = value / 100000;
-			b = value / 10000 - a * 10;
-			c = value / 1000 - a * 100 - b * 10;
-			d = value / 100 - a * 1000 - b * 100 - c * 10;
-			e = value / 10 - a * 10000 - b * 1000 - c * 100 - d * 10;
-			f = value  - a * 100000 - b * 10000 - c * 1000 - d * 100 - e * 10;
 
-			if (value > answer)
-			{
-				if (((a > 0) &&  (a == f) && (b == e) && (c == d)) ||
-   				  ((a == 0) && (b == f) && (c == e)))
-				{						
-					answer = value;
-					cout << i << "x" << j << "=" << value << endl;
-				}
+			if ((value > largest) && isPalindrome(value)) {
+				largest = value;
 			}
 			--j;
 		}
 		--i;
 	}
-	return 0;
+
+	return largest;
 }
+
+
+template <class T>
+T findSolution(T number) {
+	return findLargestPalindrome(number);
+}
+
+int main(int argc, char *argv[]) {
+    if (argc == 2) {
+        istringstream ss(argv[1]);
+        long long n;
+        if (!(ss >> n)) {
+            cerr << "Invalid number" << argv[1] << endl;
+        } else {
+            cout << "The result is = " << findSolution(n) << endl;
+        }   
+    } else {
+        cout << "usage: " << argv[0] << " <input> " << endl;
+    }   
+
+    return 0;
+}
+
