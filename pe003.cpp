@@ -2,47 +2,50 @@
 // What is the largest prime factor of the number 600851475143 ?
 
 #include <iostream>
+#include <sstream>
 #include <cmath>
 
 using namespace std;
 
+template <class T>
+T findLargestPrimeFactor(T number) {
+	T current = number;
+	T largest = 0;
 
-unsigned long long VALUE = 600851475143;
-// unsigned long long VALUE = 486847;
-
-
-int testMul(unsigned long long val)
-{
-	unsigned long long limit;
-	unsigned long long list[10];
-	int num = 0;
-
-	limit = (unsigned long long) sqrt( (double) val);	
-	
-	for (unsigned long long counter = 3; counter < limit; counter += 2)
-	{
-		if ((val % counter) == 0)
-		{
-			list[num] = counter;
-			cout << counter << endl;
-			cout << " ";
-			testMul(counter);
-			cout << endl;
-			++num;
+	int i = 2;
+	while (i * i <= number) {
+		if (current % i == 0) {
+			current /= i;
+			largest = i;
+		} else {
+			++i;
 		}
 	}
-	
-	return list[num];
+
+	if (current > largest)
+		return current;
+	return largest;
 }
 
 
-int main()
-{
-	unsigned long long val = VALUE;
-	int numList = 1;
-	
-	testMul(val);
-
-	return 0;	
+template <class T>
+T findSolution(T number) {
+	return findLargestPrimeFactor(number);
 }
 
+
+int main(int argc, char *argv[]) {
+	if (argc == 2) {
+		istringstream ss(argv[1]);
+		unsigned long long n;
+		if (!(ss >> n)) {
+			cerr << "Invalid number" << argv[1] << endl;
+      	} else {
+			cout << "The result is = " << findSolution(n) << endl;
+		}
+	} else {
+		cout << "usage: " << argv[0] << " <input> " << endl;
+	}
+
+	return 0;
+}
