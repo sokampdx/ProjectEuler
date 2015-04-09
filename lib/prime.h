@@ -6,18 +6,27 @@
 template <class T>
 class Prime {
 public:
-	Prime (T maximum);
-	T getLargestFactor(T number)
+	Prime();
+	Prime(T maximum);
 
 private:
 	T findLimit(T number);
+	void setNonPrimeForMultipleOf(T number);
 	void init();
 	void sieve();
-	bool isDivisor(divideBy, divideFrom);
 
 	T max;
 	bool * prime;	
 };
+
+
+template <class T>
+Prime<T>::Prime() {
+	max = 0;
+	prime = NULL;
+}
+
+
 
 template <class T>
 Prime<T>::Prime(T maximum) {
@@ -27,54 +36,44 @@ Prime<T>::Prime(T maximum) {
 	sieve();
 }
 
+
 template <class T>
-T get LargestFactor(T number) {
-	T result = 0;
-	T current = findLimit(number);
-	T end = 3;
-	bool isFound = false;
-
-	if (current % 2 == 0) {
-		++current;
+Prime<T>::~Prime() {
+	if (prime) {
+		delete[] prime;
 	}
-
-	while ((current >= end) && (!isFound)) {
-		if (isDivisor(current, number)) {
-			isFound = true;
-			result = current;
-		}
-		current -= 2;
-	}
-
-	return 	result;
 }
 
-template <class T>
-bool isDivisor(T divideBy, T divideFrom) {
-	return divideFrom % divideBy == 0;
-}
 
 template <class T>
-void init() {
+void Prime<T>::init() {
 	for (T i = 0; i < max; ++i) {
+		prime[i] = true;
+	}
+
+	prime[0] = prime[1] = false;
+}
+
+template <class T>
+void Prime<T>::sieve() {
+	T limit = findLimit(max);
+
+	for (T i = 3; i < limit; i+=2) {
+		if (prime[i]) {
+			setNonPrimeForMultipleOf(i);
+		}
+	}
+}
+
+template <class T>
+void Prime<T>::setNonPrimeForMultipleOf(T number) {
+	for (T i = (number + number); i < max; i += number) {
 		prime[i] = false;
 	}
 }
 
 template <class T>
-void sieve() {
-	T limit = findLimit(max);
-
-	for (T i = 3; i < limit; i+=2) {
-		if (isPrime(i)) {
-			setNonPrimeForMulOf(i);
-		}
-	}
-}
-
-
-template <class T>
-T findLimit(T number) {
+T Prime<T>::findLimit(T number) {
 	return (T) sqrt ((double) number);
 }
 
