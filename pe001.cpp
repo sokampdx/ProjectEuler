@@ -1,6 +1,6 @@
 #include <iostream> 
 #include <sstream>
-#include "lib/summation.h"
+#include "lib/mathutil.h"
  
 using namespace std; 
 
@@ -13,23 +13,18 @@ template <class T>
 T findSolution(T max) {
 	T i, j, k;
 	T sum = 0;
+	MathUtil<T> mathutil;
 
 	i = findN(max, 3);
 	j = findN(max, 5);
 	k = findN(max, 15);
 
-	Summation<int> summation(i);
-	sum += (3 * summation.getResult());
-
-	summation.setResult(j);
-	sum += (5 * summation.getResult());
-
-	summation.setResult(k);
-	sum -= (15 * summation.getResult());
+	sum += (3 * mathutil.sumP1(0, i));
+	sum += (5 * mathutil.sumP1(0, j));
+	sum -= (15 * mathutil.sumP1(0, k));
 
 	return sum;
 }
-
  
 int main(int argc, char *argv[]) {
 	if (argc == 2) {
