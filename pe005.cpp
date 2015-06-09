@@ -1,43 +1,60 @@
 #include <iostream>
 #include <cmath>
+#include <sstream>
+#include "lib/mathutil.h"
 
 using namespace std;
 
-unsigned int gcd(unsigned int a, unsigned int b)
-{
-	
-	cout << "a & b = " << a << " " << b << endl;
-	if (a == 1)
-		return 1;
-	if (b == 1)
-		return 1;
+template <class T>
+T findSolution(T min, T max) {
+	MathUtil<T> mathutil;
+	T gcdvalue;
+	T i;
+	T result = max;
 
-	unsigned int temp;
-	temp = a % b;
-	if (temp == 0)
-		return b;
-	
-	return gcd(b, temp);	
+	for (i = max-1; i >= min; --i) {
+		gcdvalue = mathutil.gcd(result, i);
+		result *= i;
+		
+		if (gcdvalue != 1)
+			result = (T) (result / gcdvalue);
+	}
+
+	return result;
 }
 
 
-int main()
-{
-	unsigned int i;
-	unsigned int gcdval;
-	unsigned int result = 20;
+void usage(char *argv) {
+	cout << "usage: " << argv << " min max " << endl;
+}
 
-	for (i = 19; i > 1; --i)
-	{
-		gcdval = gcd(result, i);
-		cout << "gcd for " << result << " & " << i << "=" << gcdval << endl;
-		result *= i;
-		if (gcdval !=  1)
-			result = (unsigned int) (result / gcdval);
-		cout << result << endl;
+
+int main(int argc, char *argv[]) {
+	bool isValid = true;
+
+	if (argc == 3) {
+		unsigned long n[2];
+		for (int i = 1; i < argc; ++i) {
+			istringstream ss(argv[i]);
+			if (!(ss >> n[i-1])) {
+				cerr << "Invalid number: " << argv[i] << endl;
+				isValid = false;
+			}
+		}
+
+		if (isValid) {
+			if (n[0] > n[1]) {
+				cerr << n[0] << " must be less than " << n[1] << endl;
+				usage(argv[0]);
+			} else {
+				cout << "The result is = " << findSolution(n[0], n[1]) << endl;
+			}
+		} else {
+			usage(argv[0]);
+		}
+	} else {
+		usage(argv[0]);
 	}
-
-	cout << result << endl;
 
 	return 0;
 }
