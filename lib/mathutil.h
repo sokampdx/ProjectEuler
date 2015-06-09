@@ -8,7 +8,13 @@ class MathUtil {
 public:
 	MathUtil();
 	
+	// factor formula
 	T gcd(T a, T b);
+
+	// summation formula
+	T sumP0(T start, T end);
+	T sumP1(T start, T end);
+	T sumP2(T start, T end);
 }; 
 
 
@@ -29,6 +35,27 @@ T MathUtil<T>::gcd(T a, T b) {
 
 	return gcd(b, temp);
 };
+
+template <class T>
+T MathUtil<T>::sumP0(T start, T end) {
+	return end + 1 - start;
+}
+
+template <class T>
+T MathUtil<T>::sumP1(T start, T end) {
+	return (end + 1 - start) * (end + start) / 2;
+}
+
+template <class T>
+T MathUtil<T>::sumP2(T start, T end) {
+	if (start > 0) {
+		return sumP2(0, end) - sumP2(0, start-1);
+	} else {
+		return end * (end + 1) * (2 * end + 1) / 6;
+	}
+}
+
+	
 
 
 #endif
