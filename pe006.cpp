@@ -1,18 +1,51 @@
 #include <iostream>
 #include <cmath>
+#include <sstream>
+#include "lib/mathutil.h"
 
 using namespace std;
 
-int main()
+template <class T>
+T findSolution(T min, T max) {
+	MathUtil<T> mathutil;
+	T result = mathutil.sumP1(min, max);
+	result *= result;
+	result -= mathutil.sumP2(min, max);
+
+	return result;
+}
+
+void usage(char *argv) {
+	cout << "usage: " << argv << " min max " << endl;
+}
+
+int main(int argc, char *argv[])
 {
-	unsigned int n = 100;
-	
-	unsigned int result;
+	bool isValid = true;
 
-	result = (n + 1) * n / 2; 
-	result = result - ( (2 * n + 1) / 3) ;
-	result = result * ((n + 1) * n / 2 );
+	if (argc == 3) {
+		unsigned long long n[2];
+		for (int i = 1; i < argc; ++i) {
+			istringstream ss(argv[i]);
+			if (!(ss >> n[i-1])) {
+				cerr << "Invalid number: " << argv[i] << endl;
+				isValid = false;
+			}
+		}
+		
+		if (isValid) {
+			if (n[0] > n[1]) {
+				cerr << n[0] << " must be less than " << n[1] << endl;
+				usage(argv[0]);
+			} else {
+				cout << "The result is = " << findSolution(n[0], n[1]) << endl;
+			}
+		} else {
+			usage(argv[0]);
+		}
+	} else {
+		usage(argv[0]);
+	}
 
-	cout << result << endl;
 	return 0;
 }
